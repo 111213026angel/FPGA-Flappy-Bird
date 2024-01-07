@@ -1,10 +1,10 @@
 # FPGA-Flappy-Bird
 
--USE FPGA 8x8 led to create a Flappy Bird game
+-USE  FPGA (8x8 led & 7-Segment Display & Verilog) to create a Flappy Bird game
 
 -INPUT：
-SW S1 控制鳥往上移動(player1) S2 重新開始(restart) 
-指撥 ON=HI 0：簡單模式 1:困難模式 (mode)
+SW按鈕 S1 控制鳥往上移動(player1) S2 重新開始(restart) 
+指撥 (ON=HI) 0：簡單模式 1:困難模式 (mode)
 
 -OUTPUT：
 七段顯示器 紀錄遊玩秒數

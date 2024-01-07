@@ -1,13 +1,13 @@
 # FPGA-Flappy-Bird
-USE FPGA 8x8 led to create a Flappy Bird game
-INPUT：
+-USE FPGA 8x8 led to create a Flappy Bird game
+-INPUT：
 SW S1 控制鳥往上移動(player1) S2 重新開始(restart) 
 指撥 ON=HI 0：簡單模式 1:困難模式 (mode)
-OUTPUT：
+-OUTPUT：
 七段顯示器 紀錄遊玩秒數
 8x8led 遊玩畫面
 
-以下是PIN腳
+-以下是PIN腳
 COMM[0]	Location	PIN_55
 COMM[1]	Location	PIN_58
 COMM[2]	Location	PIN_59

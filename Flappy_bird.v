@@ -1,7 +1,9 @@
-module Flappy_bird(output reg [7:0]DATA_R,DATA_G,DATA_B,output reg[3:0] COMM,
-input CLK,player1,restart,mode,
-output reg[1:0] com,output reg [3:0]A_count,output reg [3:0]A_count2,output reg a,b,c,d,e,f,g, output reg beep);
-//鳥在8x8led的位置
+module Flappy_bird(output reg [7:0]DATA_R,DATA_G,DATA_B,output reg[3:0] COMM,//8x8led顯示
+input CLK,player1,restart,mode,//user input
+output reg[1:0] com,output reg [3:0]A_count,output reg [3:0]A_count2,output reg a,b,c,d,e,f,g,//七段顯示器 
+output reg beep);//蜂鳴器
+
+//鳥在8x8led的初始位置
 reg [7:0] bird[7:0];
 initial begin
 bird[0]=8'b11111111;
@@ -16,7 +18,7 @@ end
 
 integer place=4;//紀錄鳥的位置
 
-//水管在8x8led的位置
+//水管在8x8led的初始位置
 reg [7:0] pip_1[7:0];
 initial begin
 pip_1[0]=8'b00111000;
@@ -29,6 +31,7 @@ pip_1[6]=8'b11111111;
 pip_1[7]=8'b11111111;
 end
 integer pip_place=0;////紀錄水管的位置，往左跑到第幾次
+
 //其他的水管素材
 reg [7:0]pip_2=8'b01110000;
 reg [7:0]pip_3=8'b11100000;
@@ -39,7 +42,6 @@ reg [7:0]pip_7=8'b01111110;
 reg [7:0]pip_8=8'b11001110;
 reg [7:0]pip_9=8'b11111000;
 
-
 integer pip_flag=0;//顯示不同的水管
 
 reg [2:0]cnt_r;
@@ -47,6 +49,7 @@ divfreq F0(CLK,CLK_div);//水管、鳥移動的速度
 divfreq2 F2(CLK,CLK_div2);//快速重複刷新畫面
 divfreq3 F3(CLK,CLK_div3);//計時器(1sec)
 
+//初始化
 initial 
 begin
 DATA_R=8'b11111111;
@@ -58,18 +61,15 @@ A_count <= 4'b0000;
 A_count2 <= 4'b0000;
 beep=1'b0;
 end
-/*
-always @(posedge CLK_div4)
-	beep=~beep;
-*/
+
 always @(posedge CLK_div3)
-	if ((bird[6][place]==1'b0 && pip_1[6][place]==1'b0 && (~restart)))begin end
-	else if (A_count2==4'b0110 && restart)begin A_count <= 4'b0000; A_count2 <= 4'b0000; end
-	else if (A_count2==4'b0110) begin end
+	if ((bird[6][place]==1'b0 && pip_1[6][place]==1'b0 && (~restart)))begin end //如果鳥撞到水管計時器停下
+	else if (A_count2==4'b0110 && restart)begin A_count <= 4'b0000; A_count2 <= 4'b0000; end  //如果完超過60秒就勝利 按restart歸零重玩
+	else if (A_count2==4'b0110) begin end // //如果完超過60秒就勝利 沒按restart計時器不動
 	else begin
-		if (restart) begin A_count <= 4'b0000; A_count2 <= 4'b0000;end
-		else if (A_count==4'b1001) begin A_count<=4'b0000; A_count2<=A_count2+ 1'b1; end
-		else A_count <= A_count + 1'b1;
+		if (restart) begin A_count <= 4'b0000; A_count2 <= 4'b0000;end //遊玩時按restart重玩
+		else if (A_count==4'b1001) begin A_count<=4'b0000; A_count2<=A_count2+ 1'b1; end //十位數+1
+		else A_count <= A_count + 1'b1; //個位數+1
 	end	
 
 always @(posedge CLK_div)
@@ -78,7 +78,7 @@ always @(posedge CLK_div)
 		else if (A_count2==4'b0110&& (~restart)) begin DATA_B=8'b00000000;end//60秒後過關
 		else 
 		begin
-			beep=1'b0;
+			beep=1'b0; //蜂鳴器不響
 			DATA_B=8'b11111111;//螢幕藍色刪掉
 			//restart 全部重設
 			if (restart)begin
@@ -218,7 +218,7 @@ always @(posedge CLK_div2)
 		if (cnt_r==3'b101)begin DATA_R<=bird[2];DATA_G<=pip_1[2]; end
 		if (cnt_r==3'b110)begin DATA_R<=bird[1];DATA_G<=pip_1[1]; end
 		if (cnt_r==3'b111)begin DATA_R<=bird[0];DATA_G<=pip_1[0]; end
-		//計時器
+		//計時器顯示
 		if (com==2'b01)begin
 			case ({A_count[3],A_count[2],A_count[1],A_count[0]})
 			4'b0000:{a,b,c,d,e,f,g}=7'b0000001;

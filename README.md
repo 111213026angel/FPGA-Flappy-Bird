@@ -14,6 +14,11 @@ SW按鈕 S1 控制鳥往上移動(player1) S2 重新開始(restart)
 -遊玩方法：
 鳥會往下掉，按S1 控制鳥往上，讓鳥通過障礙物，成功撐過60秒即為成功
 
+-遊玩畫面：
+簡單模式成功畫面&困難模式失敗：https://youtu.be/OiooWAQIfIg
+簡單模式失敗&restart畫面：https://youtu.be/UmbAMVx4U-U
+
+
 -以下是assign 的 PIN腳：
 COMM[0]	Location	PIN_55
 COMM[1]	Location	PIN_58
